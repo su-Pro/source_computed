@@ -1,0 +1,9 @@
+.form-item-label {
+	width: 550px; /* 你可以根据需要调整这个宽度 */
+	flex: none;
+}
+
+.form-item {
+	display: flex;
+	align-items: center;
+}
