@@ -1,57 +1,19 @@
 import React, { useState } from 'react'
 import './App.css'
-import Chu2 from './chu2/chu2'
-import { LikeOutline } from 'antd-mobile-icons'
+import Result from './pages/result/index'
+import Calculate from './pages/calculate/index'
+import { gradeOptions, genderOptions } from './config'
 import { ResultPage, Image, Button, Popup, Form, Selector, Card } from 'antd-mobile'
-import exampleImage from './chu2/chu2.png'
-
-function Result({ result, onClose, scoreImageSrc = exampleImage, qrCodeContent = exampleImage }) {
-	const [showConsultation, setShowConsultation] = useState(false)
-
-	return (
-		<ResultPage
-			icon={<LikeOutline />}
-			status="success"
-			title={`总成绩 ${result} 分`}
-			description="具体计算规则，请参考下方《国家体质健康测试》评分标准"
-			primaryButtonText={'提分咨询'}
-			secondaryButtonText={'重新计算'}
-			onPrimaryButtonClick={() => setShowConsultation(true)}
-			onSecondaryButtonClick={() => onClose()}
-		>
-			<div>
-				<Image src={scoreImageSrc} />
-			</div>
-			<Popup
-				visible={showConsultation}
-				onMaskClick={() => setShowConsultation(false)}
-				bodyStyle={{ borderTopLeftRadius: '8px', borderTopRightRadius: '8px', minHeight: '40vh' }}
-			>
-				<Image src={qrCodeContent} />
-			</Popup>
-		</ResultPage>
-	)
-}
-
-export const gradeOptions = [
-	{ label: '四年级', value: '4' },
-	{ label: '六年级', value: '6' },
-	{ label: '八年级', value: '8' }
-]
-
-export const genderOptions = [
-	{ label: '男', value: 'male' },
-	{ label: '女', value: 'female' }
-]
 
 const App = () => {
 	const [showResult, setShowResult] = useState(false)
 	const [showCalculate, setShowCalculate] = useState(false)
-	const [result, setResult] = useState(68)
+	// 最终得分成绩 score
+	const [score, setScore] = useState(0)
 	const [form, setForm] = useState({ grade: ['8'], gender: ['male'] })
 
 	const handleFinish = result => {
-		setResult(result)
+		setScore(result)
 		setShowResult(true)
 		setShowCalculate(false)
 	}
@@ -95,7 +57,7 @@ const App = () => {
 					</Button>
 				</Form>
 			) : showCalculate ? (
-				<Chu2
+				<Calculate
 					onFinish={handleFinish}
 					onClose={() => {
 						setShowResult(false)
@@ -108,7 +70,7 @@ const App = () => {
 				/>
 			) : (
 				<Result
-					result={result}
+					result={score}
 					onClose={() => {
 						setShowCalculate(false)
 						setShowResult(false)
